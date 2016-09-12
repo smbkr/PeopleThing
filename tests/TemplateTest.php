@@ -12,6 +12,7 @@ class TemplateTest extends TestCase {
 	 */
 	public function testTemplateString() {
 		$t = Template::is('test');
-		$this->assertEquals('/app/views/test.phtml', $t);
+		$ds = DIRECTORY_SEPARATOR;
+		$this->assertEquals($ds.'app'.$ds.'views'.$ds.'test.phtml', $t);
 	}
 }
