@@ -1,4 +1,7 @@
 # PeopleThing
+A simple app which allows a visitor to add their name, DOB and email to a list, and an administrator to view and 
+sort the list.
+
 ## Running
 The easiest way the run the app is by using the included Vagrantfile. This requires that Vagrant and VirtualBox are
 installed on your system. To do this, simply run `vagrant up`, and the app will be served at `192.168.33.10`.
@@ -8,7 +11,8 @@ outer directories `app/`,`db/` and `vendor/`.
 
 ### First run/setup
 On the first run, you'll need to run `composer install`, followed by 
-`vendor/bin/doctrine orm:schema-tool:update --force --dump-sql` to install the dependencies and initialise the database.
+`vendor/bin/doctrine orm:schema-tool:update --force --dump-sql` to install the dependencies and initialise the database. 
+If using the included Vagrant file, first run `vagrant ssh` and run the commands on the VM.
 The app directory should be writable by the Apache user.
 
 ## Usage
@@ -28,3 +32,6 @@ Testing uses PHPUnit, which should be installed & on your path. To test, run `ph
 * [Klein Router](https://github.com/klein/klein.php)
 * [Vue.js](https://vuejs.org/)
 * [Bulma CSS](http://bulma.io/)
+
+## To do
+Remove front-end dependencies (Bulma, Vue) from repo and use NPM to manage them.
