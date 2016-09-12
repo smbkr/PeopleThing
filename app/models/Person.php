@@ -59,8 +59,7 @@ class Person {
 	/**
 	 * @return string
 	 */
-	public function getDob($humanReadable = false) {
-		//TODO: format date if $humanReadable === true
+	public function getDob() {
 		return $this->dob;
 	}
 

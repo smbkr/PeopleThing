@@ -28,25 +28,19 @@ class PersonTest extends TestCase {
 	}
 
 	/**
-	 * Test that the Person model formats the Dob correctly
-	 */
-	public function testDobFormatter() {
-		$person = $this->getPerson();
-
-		$this->assertEquals('11-02-1988', $person->getDob());
-		$this->assertEquals('11-02-1988', $person->getDob(true));
-		$this->assertEquals('19880211', $person->getDob(false));
-	}
-
-	/**
 	 * Helper function to create a new Person quickly
 	 * @return Person
 	 */
 	private function getPerson() {
+		$person = new Person();
 		$name = "Vince Noir";
 		$dob = "19880211";
 		$email = "dev@null.com";
+		
+		$person->setName($name);
+		$person->setDob($dob);
+		$person->setEmail($email);
 
-		return new Person($name, $dob, $email);
+		return $person;
 	}
 }
