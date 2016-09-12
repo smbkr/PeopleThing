@@ -1,0 +1,103 @@
+<p>Please enter your name, date of birth, and email address, then press submit.</p>
+<div>
+	<form action="/add" method="POST" id="add">
+		<div class="form-item">
+			<label for="name" class="label">Name</label>
+			<input type="text" name="name" class="input fillable disableable" v-model="name">
+			<span class="help is-danger" v-bind:class="{ 'is-invisible': nameValid }">Please enter a valid name</span>
+		</div>
+		<div class="form-item">
+			<label for="dob" class="label">Date of Birth</label>
+			<input type="date" name="dob" class="input fillable disableable" v-model="dob">
+			<span class="help is-danger" v-bind:class="{ 'is-invisible': dobValid }">Please enter a valid date of birth</span>
+		</div>
+		<div class="form-item">
+			<label for="email" class="label">Email</label>
+			<input type="text" name="email" class="input fillable disableable" v-model="email">
+			<span class="help is-danger" v-bind:class="{ 'is-invisible': emailValid }">Please enter a valid email address</span>
+		</div>
+		<div id="buttons" class="control is-clearfix form-item">
+			<button class="button is-medium is-pulled-right is-primary disableable" type="submit" @click="submitHandler" v-bind:class="{ 'is-disabled': !submitReady }">Add My Details</button>
+			<a class="button is-medium is-pulled-right disableable" @click="resetForm" v-bind:class="{ 'is-disabled': !resetEnabled }">Reset Form</a>
+		</div>
+	</form>
+</div>
+<script>
+	new Vue({
+		el: '#app',
+
+		data: {
+			name: '',
+			dob: '',
+			email: ''
+		},
+
+		computed: {
+			nameValid: function() {
+				if (this.name !== '') {
+					var pattern = new RegExp("([a-z])+", "i");
+					return pattern.test(this.name);
+				}
+				return true;
+			},
+			dobValid: function() {
+				if (this.dob !== '') {
+					// The value of the date input is receive in the American format yyyy-mm-dd
+					var pattern = new RegExp('[0-9]{4}-[0-9]{2}-[0-9]{2}');
+					return pattern.test(this.dob);
+				}
+				return true;
+			},
+			emailValid: function() {
+				if (this.email !== '') {
+					var pattern = new RegExp('.+@.+\..+');
+					return pattern.test(this.email);
+				}
+				return true;
+			},
+			submitReady: function() {
+				return (this.nameValid && this.dobValid && this.emailValid && this.name !== '' && this.dob !== '' && this.email !== '');
+			},
+			resetEnabled: function() {
+				return (this.name !== '' || this.dob !== '' || this.email !== '');
+			}
+		},
+
+		methods: {
+			resetForm: function() {
+					this.name = '';
+					this.dob = '';
+					this.email = '';
+			},
+			/**
+			 * Sends the form via XHR
+			 */
+			submitHandler: function(e) {
+				e.preventDefault();
+				var button = e.target;
+				button.classList.add('is-loading');
+
+				var xhr = new XMLHttpRequest();
+				xhr.addEventListener('load', function(e) {
+					button.classList.remove('is-loading');
+					// Disable all inputs/buttons
+					var disableable = document.getElementsByClassName('disableable');
+					for (var i = 0; i < disableable.length; i++) {
+						disableable[i].classList.add('is-disabled');
+					}
+
+					// Create success notification
+					var successMessage = document.createElement('div');
+					successMessage.classList.add('notification', 'is-success');
+					successMessage.innerHTML = "Thank you! You've been added to the database.";
+
+					// Show the notification
+					var form = document.getElementById('add');
+					form.appendChild(successMessage);
+				});
+				xhr.open('POST', '/api/person');
+				xhr.send(new FormData(document.getElementById('add')));
+			}
+		}
+	});
+</script>

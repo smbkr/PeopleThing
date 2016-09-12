@@ -1,0 +1,74 @@
+<p>View and sort people who have submitted their details. Click on a column heading to sort by that property, or to reverse the sort order.</p>
+<table class="table">
+	<thead>
+		<tr>
+			<td @click="sortHandler" id="name">Name</td>
+			<td @click="sortHandler" id="dob">Date of Birth</td>
+			<td @click="sortHandler" id="email">Email Address</td>
+		</tr>
+	</thead>
+	<tbody >
+		<template id="person-template" v-for="person in people | lowerCaseOrder key order">
+			<tr>
+				<td>{{ person.name }}</td>
+				<td>{{ person.dob }}</td>
+				<td>{{ person.email }}</td>
+			</tr>
+		</template>
+	</tbody>
+</table>
+<script>
+	/**
+	 * Loads list of all people via XHR, then passes the result as JSON to a new Vue instance
+	 */
+	function getPeople() {
+		var xhr = new XMLHttpRequest();
+		xhr.addEventListener("load", function(e) {
+			initVue(JSON.parse(this.responseText));
+		});
+		xhr.open("GET", "/api/people");
+		xhr.send();
+	}
+
+	function initVue(people) {
+		new Vue({
+			el: '#app',
+
+			data: {
+				people: people,
+				key: 'name',
+				order: 1
+			},
+
+			methods: {
+				sortHandler: function(event) {
+					var key = event.target.getAttribute('id');
+					if (key === this.key) {
+						this.order = this.order * -1;
+					} else {
+						this.key = key;
+					}
+				}
+			},
+
+			filters: {
+				lowerCaseOrder: function (arr, key, reverse) {
+					var order = reverse || 1;
+					return arr.slice().sort(function (a, b) {
+						a = a[key].toLowerCase();
+						b = b[key].toLowerCase();
+						if (a === b) {
+							return true;
+						} else if (a > b) {
+							return order;
+						} else {
+							return -order;
+						}
+					})
+				}
+			}
+		});
+	}
+
+	getPeople();
+</script>

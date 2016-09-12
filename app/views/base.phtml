@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><?= $this->title ?></title>
+	<link rel="stylesheet" href="bulma.css">
+	<link rel="stylesheet" href="people-thing.css">
+	<script src="vue.js"></script>
+</head>
+<body>
+	<nav>
+		<ul class="nav nav-center nav-menu has-shadow">
+			<li class="nav-item"><h1 class="title is-5">PeopleThing</h1></li>
+			<li class="nav-item"><a href="/">Add</a></li>
+			<li class="nav-item"><a href="/list">List</a></li>
+		</ul>
+	</nav>
+	<div id="app">
+		<h1 class="title is-3">PeopleThing</h1>
+		<?= $this->yieldView() ?>
+	</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+#app
+{
+    width: 80%;
+    margin: 2em auto;
+}
+
+#buttons * + *
+{
+    margin-right: 1em;
+}
+
+.form-item,
+table
+{
+    margin-top: 10px;
+}
+
+.is-invisible
+{
+    visibility: hidden;
+}
+
+.is-active
+{
+    font-style: italic;
+}
